@@ -18,7 +18,13 @@ public class LBranch {
     modules.add(m1);
     modules.add(m2);
     
-    start_x = sx; start_y = sy; start_angle = sa;
+    
+    /* Is this the right place to control this? */
+    /* The branch angle is how the road patterns are created? */
+    float branch_angle = PI/2.0;
+    if( random(1.0)<0.5) branch_angle *= -1;
+    
+    start_x = sx; start_y = sy; start_angle = sa + branch_angle;
     turtle_x = start_x; turtle_y = start_y; turtle_angle = sa;
     c = color(random(1),random(1),random(1));
     

@@ -2,6 +2,8 @@ class LSystem {
 
   final int def_del = 64;
   final float fudge_factor = 0.15;
+  final int border=10;
+  final float density_search_angle = (2.0/3.0)*PI; // figure 4 guess
   
   ArrayList<LBranch> branches;
 
@@ -122,9 +124,17 @@ class LSystem {
     if ( predecessor.getType()==2 ) {
       if ( ((LBranchModule)predecessor).del == 0 ) { // Branch creation time
         LBranchModule tmp = (LBranchModule)predecessor;
-        //println(b);
-
-        LBranch tmp_b = new LBranch(new LRoadModule(0, tmp.rule_attr), new LInsertionQueryModule(new LRoadAttr(), 1), b.turtle_x, b.turtle_y, b.turtle_angle ); // STATE 1 == UNASSIGNED
+        
+        LRuleAttr new_road_rule_attributes = new LRuleAttr();
+        LRoadModule new_road_in_branch = new LRoadModule(0, new_road_rule_attributes);
+        LRoadAttr branch_attributes = new LRoadAttr();
+        
+        branch_attributes.angle = 0.0;
+        LInsertionQueryModule new_iq = new LInsertionQueryModule(branch_attributes, 1); // state 1==unassigned
+        
+        LBranch tmp_b = new LBranch(new_road_in_branch, new_iq, b.turtle_x, b.turtle_y, b.turtle_angle );
+        
+        //LBranch tmp_b = new LBranch(new LRoadModule(0, tmp.rule_attr), new LInsertionQueryModule(new LRoadAttr(), 1), b.turtle_x, b.turtle_y, b.turtle_angle ); // STATE 1 == UNASSIGNED
         branches.add(tmp_b);
         return;
       }
@@ -197,14 +207,14 @@ class LSystem {
       float cx=sx, cy=sy; 
       float pdsum=0.0;
       float ray_length = min_search_radius+random(max_search_radius-min_search_radius);  
-      float ray_angle = sa - (PI/4.0)+random(PI/2.0);
+      float ray_angle = sa - (density_search_angle/2.0)+random(density_search_angle);
 
       for (int s=0; s<NUM_SAMPLES; s++) {
         cx+=ray_length/NUM_SAMPLES*cos(ray_angle);
         cy+=ray_length/NUM_SAMPLES*-sin(ray_angle);
         float dx=cx-sx, dy=cy-sy;
         // sum up pd from this sample weighted by distance from start point
-        if ( cx<0 || cy <0 || cx >=width || cy>=height) pdsum -=100000.0; 
+        if ( cx<border || cy <border || cx >=width-border || cy>=height-border) pdsum -=100000.0; 
         else pdsum+=population_density[(int)cx+(int)cy*width]/(sqrt(dx*dx+dy*dy));
       }
 
@@ -258,6 +268,9 @@ class LSystem {
     if( roads.crosses_road(sx+gapx, sy+gapy, endx,endy) ) {
       return -1;
     }
+    if( endx < border || endx >width-border || sx<border||sx>width-border) return -1;
+    if( endy < border || endy >height-border || sy<border||sy>height-border) return -1;
+    
     return 0;
   }
 }
