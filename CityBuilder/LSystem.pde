@@ -1,16 +1,16 @@
 class LSystem {
 
-  final int def_del = 64;
+  final int def_del = 1000;
   final float fudge_factor = 0.15;
   final int border=10;
-  final float density_search_angle = (2.0/3.0)*PI; // figure 4 guess
+  final float density_search_angle = 0.1*PI;//(2.0/3.0)*PI; // figure 4 guess
   
   ArrayList<LBranch> branches;
 
   RoadMap roads;
   
-  float startx = random(width);
-  float starty = random(height);
+  float startx = 500;//random(width);
+  float starty = 380;//random(height);
 
   float[] population_density;
 
@@ -123,6 +123,7 @@ class LSystem {
     //case 5:
     if ( predecessor.getType()==2 ) {
       if ( ((LBranchModule)predecessor).del == 0 ) { // Branch creation time
+        if(b.children_remaining<1) return;
         LBranchModule tmp = (LBranchModule)predecessor;
         
         LRuleAttr new_road_rule_attributes = new LRuleAttr();
@@ -133,7 +134,7 @@ class LSystem {
         LInsertionQueryModule new_iq = new LInsertionQueryModule(branch_attributes, 1); // state 1==unassigned
         
         LBranch tmp_b = new LBranch(new_road_in_branch, new_iq, b.turtle_x, b.turtle_y, b.turtle_angle );
-        
+        b.children_remaining--;
         //LBranch tmp_b = new LBranch(new LRoadModule(0, tmp.rule_attr), new LInsertionQueryModule(new LRoadAttr(), 1), b.turtle_x, b.turtle_y, b.turtle_angle ); // STATE 1 == UNASSIGNED
         branches.add(tmp_b);
         return;
@@ -189,11 +190,11 @@ class LSystem {
     LRoadAttr result = new LRoadAttr();
 
     // Distance around this end to search
-    float max_search_radius = 128.0;
-    float min_search_radius = 16.0;
+    float max_search_radius = 18.0/population_density[(int)sx+(int)sy*width];
+    float min_search_radius = 6.0/population_density[(int)sx+(int)sy*width];
 
     // number of rays to sample around the end
-    int NUM_RAYS = 100;
+    int NUM_RAYS = 10;
 
     // number of samples along any one ray
     int NUM_SAMPLES = 10;
@@ -252,6 +253,7 @@ class LSystem {
       if(ra.angle>PI/2.0*1.2) return -1; //ra.angle=PI/2.0*1.2;
       //if(ra.angle<PI/2.0*0.8) ra.angle=PI/2.0*0.8;
     }
+    if(random(1.0) > population_density[(int)sx+(int)sy*width]) return -1;
     else {
       if(ra.angle<PI/2.0*-1.2) return -1; //ra.angle=PI/2.0*01.2;
       //if(ra.angle>PI/2.0*-0.8) ra.angle=PI/2.0*-0.8;

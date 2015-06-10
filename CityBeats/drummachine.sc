@@ -46,7 +46,7 @@ SynthDef(\hihat, { |amp = 1, freq = 2000, rq = 3, decay = 0.3, pan, out|
 )
 
 (
-TempoClock.default.tempo = 80 / 60;
+TempoClock.default.tempo = 133 / 60;
 
 ~kikEnvir = (
     parent: ~commonFuncs,
@@ -169,7 +169,9 @@ TempoClock.default.tempo = 80 / 60;
         \freq, Pif(Pkey(\amp) > 0, 12000, \rest)
     )
 }), inf)).play(quant: 4);
+
 )
+
 
 // stop just before barline
 t = TempoClock.default;

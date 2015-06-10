@@ -10,6 +10,8 @@ public class LBranch {
   float turtle_y = 0.0;
   float turtle_angle = 0.0;
   
+  int children_remaining = 3;
+  
   color c;
   
   public LBranch( LModule m1, LModule m2, float sx, float sy, float sa ) {
@@ -21,7 +23,7 @@ public class LBranch {
     
     /* Is this the right place to control this? */
     /* The branch angle is how the road patterns are created? */
-    float branch_angle = PI/2.0;
+    float branch_angle = 0.5*PI;
     if( random(1.0)<0.5) branch_angle *= -1;
     
     start_x = sx; start_y = sy; start_angle = sa + branch_angle;

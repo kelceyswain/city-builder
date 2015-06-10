@@ -22,7 +22,7 @@ void setup()
 void draw()
 {
   clear();
-  drawPopulationDensityMap();
+  //drawPopulationDensityMap();
 
   l.update_branches();
   l.draw_roads();
@@ -30,8 +30,8 @@ void draw()
 
 float g(float x, float y) {
   float A=1.0;
-  float sigx=100;
-  float sigy=100;
+  float sigx=250;
+  float sigy=250;
   float x0=width/2;
   float y0=height/2;
   return A*exp( -( (((x-x0)*(x-x0))/(2*sigx*sigx)) + (((y-y0)*(y-y0))/(2*sigy*sigy)) ) );
@@ -47,15 +47,17 @@ void createPopulationDensityMap()
     for (int y=0; y<H; y++) {
       
       /* Gaussian */
-      populationDensityMap[x+y*W]=g(x, y);
+      //populationDensityMap[x+y*W]=g(x, y);
       
       /* OR: */
       /* Perlin noise */
       float bright = noise(xoff, yoff);
-     // populationDensityMap[x+y*W]=bright;
-      yoff+=0.01;
+      populationDensityMap[x+y*W]=bright;
+      populationDensityMap[x+y*W] *= g(x, y);
+      populationDensityMap[x+y*W] *= 2;
+      yoff+=0.005;
     }
-    xoff+=0.01;
+    xoff+=0.005;
   }
 }
 
