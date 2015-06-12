@@ -8,9 +8,9 @@ class Road {
   }  
   
   void drawMe() {
-    strokeWeight(4.0);
+    strokeWeight(2.0);
     strokeCap(ROUND);
-    stroke(1.0,1.0,0.0);
+    stroke(0.24,0.85,0.23);
     line(staX,staY,endX,endY);
   }
   
