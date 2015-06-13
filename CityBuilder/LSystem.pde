@@ -1,39 +1,46 @@
 class LSystem {
 
+  /* Maximum deletion parameter for building new branches */
   final int def_del = 1000;
+  
+  /* Likelihood that a potential road will not be built */
   final float fudge_factor = 0.15;
+  
+  /* Gap to leave at the edge */
   final int border=10;
+  
+  /* Angle to search around the current road end to build the next section */
   final float density_search_angle = 0.1*PI;//(2.0/3.0)*PI; // figure 4 guess
   
+  float startx = width/2;
+  float starty = height/2;
+
   ArrayList<LBranch> branches;
-
-  RoadMap roads;
   
-  float startx = 500;//random(width);
-  float starty = 380;//random(height);
-
+  RoadMap roads;
   float[] population_density;
 
+  /* Constructor */
   public LSystem( float[] pd ) {
 
     population_density = pd;
 
+    /* Initial data structures */
     branches = new ArrayList<LBranch>();
     roads = new RoadMap();
-    // Needs an angle and distance from startx, starty
-    LRoadAttr initRoadAttr = getBestRoadAttributesFromStartingPos(startx, starty, 0.0);
+    
+    /* Get an initial proposed road from globalGoals */
+    LRoadAttr initRoadAttr = globalGoals(startx, starty, 0.0);
 
+    /* Create the rules in the first branch */
     LBranch root = new LBranch(new LRoadModule(0, new LRuleAttr()), new LInsertionQueryModule(initRoadAttr, 1), startx, starty,0.0 );
 
     branches.add(root);
-
-    println(root);
-
   }
+  
+  /* update_branches: iterate over every branch in the array */
   public void update_branches() {
-    
-    //roads = new RoadMap();
-    
+
     for ( int b=0; b<branches.size (); b++ ) {
       LBranch tmp = branches.get(b);
       tmp.reset_turtle();
@@ -42,12 +49,6 @@ class LSystem {
     }
   }
 
-  public void draw_roads() {
-    for ( int b=0; b<branches.size (); b++ ) {
-      branches.get(b).drawMap();
-    }
-    roads.draw_roads();
-  }
   public void updateBranch(LBranch b) {
 
     for ( int c=0; c<b.modules.size (); c++) {
@@ -58,6 +59,14 @@ class LSystem {
     b.modules = b.working;
     b.working = new ArrayList<LModule>();
   }
+  
+  public void draw_roads() {
+    for ( int b=0; b<branches.size (); b++ ) {
+      branches.get(b).drawMap();
+    }
+    roads.draw_roads();
+  }
+x
 
   // ApplyRule: reads module at position, tries to apply all rules, stops when one hits and applies successor to working list
   public void applyRulesToBranchModule( LBranch b, int position ) {
@@ -94,7 +103,7 @@ class LSystem {
 
           float end_x = b.turtle_x; 
           float end_y = b.turtle_y;
-          LRoadAttr ra = getBestRoadAttributesFromStartingPos(end_x, end_y, b.turtle_angle);
+          LRoadAttr ra = globalGoals(end_x, end_y, b.turtle_angle);
           ra.angle -= b.turtle_angle;
           
           m_work.add(new LRoadModule((int)random(def_del), new LRuleAttr()));
@@ -185,7 +194,7 @@ class LSystem {
     m_work.add( predecessor );
   }
 
-  LRoadAttr getBestRoadAttributesFromStartingPos( float sx, float sy, float sa ) {
+  LRoadAttr globalGoals( float sx, float sy, float sa ) {
 
     LRoadAttr result = new LRoadAttr();
 

@@ -1,7 +1,7 @@
 import blobDetection.*;
 
 // number of contours
-int levels = 15;
+int levels = 1;
 PImage img;
 
 final int W=1024;
@@ -26,6 +26,9 @@ void setup()
     makeContours(levels);
 
     l = new LSystem(populationDensityMap);
+    
+    perspective();
+    
 }
 
 void draw()

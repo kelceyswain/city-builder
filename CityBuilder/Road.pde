@@ -11,7 +11,7 @@ class Road {
     strokeWeight(2.0);
     strokeCap(ROUND);
     stroke(0.24,0.85,0.23);
-    line(staX,staY,endX,endY);
+    line(staX,0,staY,endX,0,endY);
   }
   
   boolean crosses( Road r ) {
