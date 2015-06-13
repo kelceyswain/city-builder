@@ -66,7 +66,7 @@ class LSystem {
     }
     roads.draw_roads();
   }
-x
+
 
   // ApplyRule: reads module at position, tries to apply all rules, stops when one hits and applies successor to working list
   public void applyRulesToBranchModule( LBranch b, int position ) {
