@@ -8,8 +8,9 @@ import blobDetection.*;
 // Settings
 boolean draw_terrain_map = false;
 boolean draw_road_map = true;
-boolean draw_contours = true;
+boolean draw_contours = false;
 boolean draw_branches = false;
+boolean draw_terrain = true;
 
 // number of contours
 int levels = 14;
@@ -33,6 +34,7 @@ RoadMap rm;
 LSystem l;
 void setup()
 {
+  
     size(W, H, P3D);
     frameRate(24.0);
     colorMode(RGB, 1);
@@ -46,7 +48,7 @@ void setup()
     l = new LSystem(populationDensityMap, terrainMap);
     cam = new PeasyCam(this,200);
    // perspective();
-    
+  noSmooth();  
 }
 
 void draw()
@@ -63,11 +65,27 @@ void draw()
           translate(0,0,landscape_height_scale/(float)levels);  
           drawContours(i);
       }
-    }
     popMatrix();
+    }
+    
     l.update_branches(draw_branches);
+    if(draw_terrain) draw_terrain();
     if(draw_branches) l.draw_branches();
     if(draw_road_map) l.draw_roads();
+}
+
+void draw_terrain()
+{
+  int x,y;
+  for( y=0;y<height; y+=4) {
+    for(x=0;x<width;x+=4){
+      float val=terrainMap[y*width+x];
+      float b=val/landscape_height_scale;
+      stroke(color(b,b,b));      
+      point(x,y,val);
+      
+    }
+  }
 }
 
 float g(float x, float y) {
