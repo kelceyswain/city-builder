@@ -19,11 +19,12 @@ class LSystem {
   
   RoadMap roads;
   float[] population_density;
-
+  float[] terrain;
+  
   /* Constructor */
-  public LSystem( float[] pd ) {
+  public LSystem( float[] pd, float[] t ) {
 
-    population_density = pd;
+    population_density = pd; terrain = t;
 
     /* Initial data structures */
     branches = new ArrayList<LBranch>();
@@ -185,7 +186,8 @@ class LSystem {
       LTerminal tmp = (LTerminal)predecessor;
       float pre_x = b.turtle_x, pre_y = b.turtle_y; // start of road is where turtle is
       b.applyTerminalToTurtle(tmp);
-      if( tmp.myRoad==null) tmp.myRoad = roads.addRoad(pre_x,pre_y,b.turtle_x,b.turtle_y); // add road to roads
+      if( tmp.myRoad==null) tmp.myRoad = roads.addRoad(pre_x,     pre_y,     terrain[(int)(width*pre_y+pre_x)],
+                                                       b.turtle_x,b.turtle_y,terrain[(int)(width*b.turtle_y+b.turtle_x)]); // add road to roads
       
       m_work.add( tmp ); // just copy it out
       return;

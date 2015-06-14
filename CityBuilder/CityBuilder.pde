@@ -1,13 +1,24 @@
+import peasy.test.*;
+import peasy.org.apache.commons.math.*;
+import peasy.*;
+import peasy.org.apache.commons.math.geometry.*;
+
 import blobDetection.*;
 
 // number of contours
-int levels = 1;
+int levels = 14;
 PImage img;
+
+PeasyCam cam;
+float factor=1.0;
+
+float landscape_height_scale = 100.0;
 
 final int W=1024;
 final int H=768;
 
 float[] populationDensityMap;
+float[] terrainMap;
 
 // Array of BlobDetection Instances for contours
 BlobDetection[] theBlobDetection = new BlobDetection[int(levels)];
@@ -23,11 +34,12 @@ void setup()
     fill(1.0, 1.0, 0.0); 
     stroke(1.0, 1.0, 0.0);
     createPopulationDensityMap();
+    createTerrainMap();
     makeContours(levels);
 
-    l = new LSystem(populationDensityMap);
-    
-    perspective();
+    l = new LSystem(populationDensityMap, terrainMap);
+    cam = new PeasyCam(this,200);
+   // perspective();
     
 }
 
@@ -37,10 +49,14 @@ void draw()
     //drawPopulationDensityMap();
     background(1.0, 1.0, 0.95);  
     
+    translate(-width*factor/2,-height*factor/2);
+    image(img,0,0);
+    pushMatrix();
     for (int i=0 ; i<levels ; i++) {
-        //translate(0,0,10/levels);  
+        translate(0,0,landscape_height_scale/(float)levels);  
         drawContours(i);
     }
+    popMatrix();
     l.update_branches();
     l.draw_roads();
 }
@@ -72,16 +88,43 @@ void createPopulationDensityMap()
             float bright = noise(xoff, yoff);
             populationDensityMap[x+y*W]=bright;
             populationDensityMap[x+y*W] *= g(x, y);
-            img.loadPixels();
-            img.pixels[x+y*W] = color((bright*bright));
-            img.updatePixels();
+//            img.loadPixels();
+//            img.pixels[x+y*W] = color((bright*bright));
+//            img.updatePixels();
             populationDensityMap[x+y*W] *= 2;
             yoff+=0.005;
         }
         xoff+=0.005;
     }
 }
+void createTerrainMap()
+{
 
+    /* This one is a gaussian around the centre of the window */
+    terrainMap=new float[W*H];
+    float xoff=0.0;
+    img = createImage(W, H, RGB);
+    for ( int x=0; x<W; x++) {
+        float yoff=0.0;
+        for (int y=0; y<H; y++) {
+
+            /* Gaussian */
+            //populationDensityMap[x+y*W]=g(x, y);
+
+            /* OR: */
+            /* Perlin noise */
+            float bright = noise(xoff, yoff);
+            terrainMap[x+y*W]=bright * landscape_height_scale;
+            terrainMap[x+y*W] *= g(x, y);
+            img.loadPixels();
+            img.pixels[x+y*W] = color((bright*bright));
+            img.updatePixels();
+            //terrainMap[x+y*W] *= 20;
+            yoff+=0.005;
+        }
+        xoff+=0.005;
+    }
+}
 void makeContours(int lev) {
     for (int i=0;  i<lev ; i++) {
         theBlobDetection[i] = new BlobDetection(img.width, img.height);

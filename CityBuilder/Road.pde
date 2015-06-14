@@ -1,17 +1,18 @@
 class Road {
 
-  float staX, staY;
-  float endX, endY;
-
-  public Road( float x1, float y1, float x2, float y2 ) {
-    staX=x1; staY=y1; endX=x2; endY=y2;
+  float staX, staY, staZ;
+  float endX, endY, endZ;
+ 
+  public Road( float x1, float y1, float z1, float x2, float y2, float z2) {
+    staX=x1; staY=y1; staZ=z1;endX=x2; endY=y2; endZ=z2;
   }  
   
   void drawMe() {
     strokeWeight(2.0);
     strokeCap(ROUND);
     stroke(0.24,0.85,0.23);
-    line(staX,0,staY,endX,0,endY);
+    line(staX,staY,staZ,endX,endY,endZ);
+    println("line("+staX+","+staY+","+staZ+","+endX+","+endY+","+endZ+");");
   }
   
   boolean crosses( Road r ) {

@@ -17,8 +17,8 @@ class RoadMap {
 
   }
   
-  Road addRoad( float x1, float y1, float x2, float y2 ) {
-    Road r = new Road(x1,y1,x2,y2);
+  Road addRoad( float x1, float y1, float z1, float x2, float y2, float z2 ) {
+    Road r = new Road(x1,y1,z1,x2,y2,z2);
     roads.add(r);
 
     return r;
@@ -31,7 +31,7 @@ class RoadMap {
   }
   
   boolean crosses_road( float x1, float y1, float x2, float y2 ) {
-    Road tmp = new Road(x1,y1,x2,y2);
+    Road tmp = new Road(x1,y1,0,x2,y2,0);
     
     for( int c=0; c<roads.size();c++ ) {
       if( tmp.crosses(roads.get(c)) ) return true;
