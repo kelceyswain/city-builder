@@ -5,6 +5,12 @@ import peasy.org.apache.commons.math.geometry.*;
 
 import blobDetection.*;
 
+// Settings
+boolean draw_terrain_map = false;
+boolean draw_road_map = true;
+boolean draw_contours = true;
+boolean draw_branches = false;
+
 // number of contours
 int levels = 14;
 PImage img;
@@ -50,15 +56,18 @@ void draw()
     background(1.0, 1.0, 0.95);  
     
     translate(-width*factor/2,-height*factor/2);
-    image(img,0,0);
-    pushMatrix();
-    for (int i=0 ; i<levels ; i++) {
-        translate(0,0,landscape_height_scale/(float)levels);  
-        drawContours(i);
+    if(draw_terrain_map) image(img,0,0);
+    if(draw_contours){
+      pushMatrix();
+      for (int i=0 ; i<levels ; i++) {
+          translate(0,0,landscape_height_scale/(float)levels);  
+          drawContours(i);
+      }
     }
     popMatrix();
-    l.update_branches();
-    l.draw_roads();
+    l.update_branches(draw_branches);
+    if(draw_branches) l.draw_branches();
+    if(draw_road_map) l.draw_roads();
 }
 
 float g(float x, float y) {

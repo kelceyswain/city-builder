@@ -28,7 +28,7 @@ class LSystem {
 
     /* Initial data structures */
     branches = new ArrayList<LBranch>();
-    roads = new RoadMap();
+    roads = new RoadMap(terrain);
     
     /* Get an initial proposed road from globalGoals */
     LRoadAttr initRoadAttr = globalGoals(startx, starty, 0.0);
@@ -40,13 +40,13 @@ class LSystem {
   }
   
   /* update_branches: iterate over every branch in the array */
-  public void update_branches() {
+  public void update_branches(boolean also_draw_them) {
 
     for ( int b=0; b<branches.size (); b++ ) {
       LBranch tmp = branches.get(b);
       tmp.reset_turtle();
       updateBranch(tmp);
-      tmp.drawMap();
+      //if(also_draw_them) tmp.drawMap();
     }
   }
 
@@ -60,11 +60,14 @@ class LSystem {
     b.modules = b.working;
     b.working = new ArrayList<LModule>();
   }
-  
-  public void draw_roads() {
-    for ( int b=0; b<branches.size (); b++ ) {
+
+  public void draw_branches() {
+        for ( int b=0; b<branches.size (); b++ ) {
       branches.get(b).drawMap();
     }
+  }  
+  public void draw_roads() {
+
     roads.draw_roads();
   }
 

@@ -2,9 +2,13 @@ class Road {
 
   float staX, staY, staZ;
   float endX, endY, endZ;
- 
+  float len;
+  float dx,dy;
   public Road( float x1, float y1, float z1, float x2, float y2, float z2) {
     staX=x1; staY=y1; staZ=z1;endX=x2; endY=y2; endZ=z2;
+    
+    dx=endX-staX; dy=endY-staY;
+    len=sqrt(dx*dx+dy*dy);
   }  
   
   void drawMe() {
