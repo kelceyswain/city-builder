@@ -81,7 +81,8 @@ void draw_terrain()
     for(x=0;x<width;x+=4){
       float val=terrainMap[y*width+x];
       float b=val/landscape_height_scale;
-      stroke(color(b,b,b));      
+      if(val<20.0) stroke(color(0,0,0.6));
+       else stroke(color(0.1,0.1+b,0.1));      
       point(x,y,val);
       
     }
