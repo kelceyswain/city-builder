@@ -35,13 +35,30 @@ class RoadMap {
     strokeWeight(2.0);
     strokeCap(ROUND);
     stroke(0.24,0.85,0.23);
-    float drawn=0.0; float cx=r.staX; float cy=r.staY;
+   // float drawn=0.0; float cx=r.staX; float cy=r.staY;
 
     int apx=(int)r.staX; int epx=(int)r.endX;
     int apy=(int)r.staY; int epy=(int)r.endY;
     float z1=terrain[apy*width+apx];
     float z2=terrain[epy*width+epx];
-    line(r.staX,r.staY,z1,r.endX,r.endY,z2);
+    // statement below is the staight line roads
+   // line(r.staX,r.staY,z1,r.endX,r.endY,z2);
+    
+   
+    stroke(0.85,0.24,0.23);
+    // draw the line incrementally following the height of the intermediate terrain between start and end
+    // do it in fixed distance chunks
+    int num_chunks = (int)(r.len / 1.0); // ten pixel length chunks
+    
+    float dx=r.dx/(float)num_chunks; float dy=r.dy/(float)num_chunks; float dz=(z2-z1)/(float)num_chunks;
+    
+    float cx=r.staX; float cy=r.staY; float cz=z1;
+    for( int v=0;v<num_chunks;v++) {
+      float heighthere=terrain[(int)(cy+dy)*width+(int)(cx+dx)];
+      line(cx,cy,cz,cx+dx,cy+dy,heighthere);
+      cx+=dx; cy+=dy;cz=heighthere;
+      
+    }
     //println("line("+staX+","+staY+","+staZ+","+endX+","+endY+","+endZ+");");
   }
   
