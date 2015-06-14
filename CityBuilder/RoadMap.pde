@@ -45,7 +45,7 @@ class RoadMap {
    // line(r.staX,r.staY,z1,r.endX,r.endY,z2);
     
    
-    stroke(0.85,0.24,0.23);
+    stroke(0.85,0.85,0.23);
     // draw the line incrementally following the height of the intermediate terrain between start and end
     // do it in fixed distance chunks
     int num_chunks = (int)(r.len / 1.0); // ten pixel length chunks

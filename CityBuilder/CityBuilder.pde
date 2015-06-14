@@ -8,7 +8,7 @@ import blobDetection.*;
 // Settings
 boolean draw_terrain_map = false;
 boolean draw_road_map = true;
-boolean draw_contours = false;
+boolean draw_contours = true;
 boolean draw_branches = false;
 boolean draw_terrain = true;
 
@@ -33,8 +33,7 @@ BlobDetection[] theBlobDetection = new BlobDetection[int(levels)];
 RoadMap rm;
 LSystem l;
 void setup()
-{
-  
+{ 
     size(W, H, P3D);
     frameRate(24.0);
     colorMode(RGB, 1);
@@ -48,7 +47,7 @@ void setup()
     l = new LSystem(populationDensityMap, terrainMap);
     cam = new PeasyCam(this,200);
    // perspective();
-  noSmooth();  
+  //noSmooth();  
 }
 
 void draw()
@@ -76,17 +75,59 @@ void draw()
 
 void draw_terrain()
 {
-  int x,y;
-  for( y=0;y<height; y+=4) {
-    for(x=0;x<width;x+=4){
-      float val=terrainMap[y*width+x];
-      float b=val/landscape_height_scale;
-      if(val<20.0) stroke(color(0,0,0.6));
-       else stroke(color(0.1,0.1+b,0.1));      
-      point(x,y,val);
+  noStroke();
+  int stepSize=4;
+  int x1,y1,x2,y2,x3,y3,x4,y4;
+  float z1,z2,z3,z4;
+  
+  for(y1=0;y1<height-stepSize;y1+=stepSize) {
+    beginShape(TRIANGLE_STRIP);
+    for(x1=0;x1<width-stepSize;x1+=stepSize) {
+      //draw two triangles
+      x2=x1+stepSize; x3=x1;          x4=x1+stepSize;
+      y2=y1;          y3=y1+stepSize; y4=y1+stepSize;
+      z1=terrainMap[y1*width+x1];
+      z2=terrainMap[y2*width+x2];
+      z3=terrainMap[y3*width+x3];
+      z4=terrainMap[y4*width+x4];
       
+       
+//      
+        float b=z1/landscape_height_scale;
+        
+//if(b<.2) fill(color(0,0,0.6));
+       //else
+       fill(color(0.1,0.1+b,0.1));         
+        vertex(x1,y1,z1);
+       // vertex(x2,y2,z2);
+//        vertex(x4,y4,z4);
+      b=z3/landscape_height_scale;
+      //if(b<.2) fill(color(0,0,0.6));
+       //else
+       fill(color(0.1,0.1+b,0.1));
+        vertex(x3,y3,z3);
+
+//     beginShape();
+//       vertex(x3,y3,z3);
+//       vertex(x2,y2,z2);
+//       
+//     endShape();
+     
     }
+    endShape();
   }
+//  
+//  int x,y;
+//  for( y=0;y<height; y+=stepSize) {
+//    for(x=0;x<width;x+=stepSize){
+//      float val=terrainMap[y*width+x];
+//      float b=val/landscape_height_scale;
+//      if(val<20.0) stroke(color(0,0,0.6));
+//       else stroke(color(0.1,0.1+b,0.1));      
+//      point(x,y,val);
+//      
+//    }
+//  }
 }
 
 float g(float x, float y) {
@@ -145,7 +186,7 @@ void createTerrainMap()
             terrainMap[x+y*W]=bright * landscape_height_scale;
             terrainMap[x+y*W] *= g(x, y);
             img.loadPixels();
-            img.pixels[x+y*W] = color((bright*bright));
+            img.pixels[x+y*W] = color(bright*g(x,y));
             img.updatePixels();
             //terrainMap[x+y*W] *= 20;
             yoff+=0.005;
