@@ -18,6 +18,13 @@ class RoadMap {
   }
   
   Road addRoad( float x1, float y1, float x2, float y2 ) {
+    OscMessage myMessage = new OscMessage("/road");
+    myMessage.add(x1);
+    myMessage.add(y1);
+    myMessage.add(x2);
+    myMessage.add(y2);
+    println(myMessage);
+    //oscP5.send(myMessage, remoteLocation);
     Road r = new Road(x1,y1,x2,y2);
     roads.add(r);
 

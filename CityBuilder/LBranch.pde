@@ -20,6 +20,12 @@ public class LBranch {
     modules.add(m1);
     modules.add(m2);
     
+    OscMessage m = new OscMessage("/branch");
+    m.add(sx);
+    m.add(sy);
+    m.add(sa);
+    println(m);
+    //oscP5.send(m, remoteLocation);
     
     /* Is this the right place to control this? */
     /* The branch angle is how the road patterns are created? */

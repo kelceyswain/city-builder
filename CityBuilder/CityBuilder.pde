@@ -1,7 +1,13 @@
 import blobDetection.*;
+import oscP5.*;
+import netP5.*;
+
+OscP5 oscP5;
+NetAddress remoteLocation;
+int broadcastPort = 12000;
 
 // number of contours
-int levels = 1;
+int levels = 10;
 PImage img;
 
 final int W=1024;
@@ -28,6 +34,10 @@ void setup()
     l = new LSystem(populationDensityMap);
     
     perspective();
+
+    // OSCsetup
+    oscP5 = new OscP5(this, broadcastPort);
+    remoteLocation = new NetAddress("127.0.0.1", broadcastPort);
     
 }
 
@@ -120,5 +130,8 @@ void drawPopulationDensityMap()
     updatePixels();
 }
 
-
-
+void oscEvent(OscMessage theOscMessage) {
+  print("### received an osc message.");
+  print(" addrpattern: "+theOscMessage.addrPattern());
+  println(" typetag: "+theOscMessage.typetag());
+}
