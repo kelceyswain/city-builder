@@ -3,13 +3,14 @@ public class LBranch {
   ArrayList<LModule> modules;
   ArrayList<LModule> working;
   
+  OscMessage message;
+  
   float start_x = 0.0;
   float start_y = 0.0;
   float start_angle = 0.0;
   float turtle_x = 0.0;
   float turtle_y = 0.0;
   float turtle_angle = 0.0;
-  
   int children_remaining = 3;
   
   color c;
@@ -20,13 +21,12 @@ public class LBranch {
     modules.add(m1);
     modules.add(m2);
     
-    OscMessage m = new OscMessage("/branch");
-    m.add(sx);
-    m.add(sy);
-    m.add(sa);
-    println(m);
-    //oscP5.send(m, remoteLocation);
-    
+    OscMessage msg = new OscMessage("/branch");
+    msg.add(sx);
+    msg.add(sy);
+    msg.add(sa);
+    osc.send(msg, supercollider);
+
     /* Is this the right place to control this? */
     /* The branch angle is how the road patterns are created? */
     float branch_angle = 0.5*PI;
