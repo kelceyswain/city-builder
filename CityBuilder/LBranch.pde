@@ -21,12 +21,13 @@ public class LBranch {
     modules.add(m1);
     modules.add(m2);
     
+    if( null==osc ) { println("OSC is null");} else {
     OscMessage msg = new OscMessage("/branch");
     msg.add(sx);
     msg.add(sy);
     msg.add(sa);
     osc.send(msg, supercollider);
-
+    }
     /* Is this the right place to control this? */
     /* The branch angle is how the road patterns are created? */
     float branch_angle = 0.5*PI;

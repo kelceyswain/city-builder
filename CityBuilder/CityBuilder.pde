@@ -32,12 +32,14 @@ void setup()
     createPopulationDensityMap();
     makeContours(levels);
 
+    osc = new OscP5(this, 12000);
+    supercollider = new NetAddress("127.0.0.1", 57120);  
     l = new LSystem(populationDensityMap);
     
     perspective();
     
-    osc = new OscP5(this, 12000);
-    supercollider = new NetAddress("127.0.0.1", 57120);   
+    
+     
 
 }
 
