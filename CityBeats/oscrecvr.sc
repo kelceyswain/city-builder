@@ -3,7 +3,7 @@ s.quit;
 
 (
 b = Buffer.read(s, "/home/kelcey/audio/SteinwayMono.wav");
-SynthDef(\grainPiano, {arg gate = 1, amp = 0.1, sndbuf, t_trig = 0, dry = 1, pos = 0;
+SynthDef(\grainPiano, {arg gate = 1, amp = 0.01, sndbuf, t_trig = 0, dry = 1, pos = 0;
 	    var env, freqdev;
 	    env = EnvGen.kr(
 		        Env([0, 1, 0], [1, 1], \sin, 1),
@@ -14,8 +14,10 @@ SynthDef(\grainPiano, {arg gate = 1, amp = 0.1, sndbuf, t_trig = 0, dry = 1, pos
 		GVerb.ar(GrainBuf.ar(1, t_trig, 0.15, sndbuf, 1, pos, 2, 0, -1), 40, 1.24, dry, 0.95, 15, dry, -15, -11, mul: env));
     }).send(s);
 
-SynthDef(\evilBang, { | freq, width, length = 5, cps = 6 |
+SynthDef(\evilBang, { | freq=0.5, width=0.5, length = 2, cps = 6 |
 	var env, synth;
+	freq = (freq * 50) + 10;
+	width = (width * 10) + 10;
 	env = EnvGen.kr(Env.perc(0.01, length));
 	synth = Gendy2.ar(3, 4, 2, 5, [freq, freq], freq + width, initCPs: cps, mul:0.1);
 	synth = BPeakEQ.ar(synth, freq+(width * 0.5), 50, 18);
@@ -27,13 +29,12 @@ SynthDef(\evilBang, { | freq, width, length = 5, cps = 6 |
 )
 
 
-Synth(\evilBang, [\freq, 50]);
+Synth(\evilBang, [\freq, 1, \width, 1]);
 
 (
-//o = OSCFunc({ arg msg, time, addr, recvPort; [msg, time, addr, recvPort].postln; }, '/branch');
 a = Synth(\grainPiano, [\sndbuf, b]);
 o = OSCFunc({ arg msg, time, addr, recvPort; a.set(\t_trig, 1); a.set(\trigger, 0); a.set(\dry, msg[1]); a.set(\pos, msg[2])}, '/road');
-p = OSCFunc({ arg msg, time, addr, recvPort; Synth(\evilBang, [\freq,  msg[1]*100+20], \width, msg[2]*20+10); }, '/branch');
+p = OSCFunc({ arg msg, time, addr, recvPort; Synth(\evilBang, [\freq, msg[1], \width, msg[2]]); }, '/branch');
 )
 
 o.free;

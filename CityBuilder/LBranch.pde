@@ -8,7 +8,7 @@ public class LBranch {
   float start_x = 0.0;
   float start_y = 0.0;
   float start_angle = 0.0;
-  float turtle_x = 0.0;add
+  float turtle_x = 0.0;
   float turtle_y = 0.0;
   float turtle_angle = 0.0;
   int children_remaining = 3;
