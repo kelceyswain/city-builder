@@ -20,10 +20,10 @@ class RoadMap {
   Road addRoad( float x1, float y1, float x2, float y2 ) {
     
     OscMessage msg = new OscMessage("/road");
-    msg.add(x1);
-    msg.add(y1);
-    msg.add(x2);
-    msg.add(y2);
+    msg.add(x1/W);
+    msg.add(y1/H);
+    msg.add(x2/W);
+    msg.add(y2/H);
     osc.send(msg, supercollider);
     
     Road r = new Road(x1,y1,x2,y2);

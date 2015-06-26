@@ -8,7 +8,7 @@ public class LBranch {
   float start_x = 0.0;
   float start_y = 0.0;
   float start_angle = 0.0;
-  float turtle_x = 0.0;
+  float turtle_x = 0.0;add
   float turtle_y = 0.0;
   float turtle_angle = 0.0;
   int children_remaining = 3;
@@ -23,8 +23,8 @@ public class LBranch {
     
     if( null==osc ) { println("OSC is null");} else {
     OscMessage msg = new OscMessage("/branch");
-    msg.add(sx);
-    msg.add(sy);
+    msg.add(sx/W);
+    msg.add(sy/H);
     msg.add(sa);
     osc.send(msg, supercollider);
     }
