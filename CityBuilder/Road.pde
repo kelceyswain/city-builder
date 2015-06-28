@@ -8,10 +8,10 @@ class Road {
   }  
   
   void drawMe() {
-    strokeWeight(2.0);
-    strokeCap(ROUND);
-    stroke(0.24,0.85,0.23);
-    line(staX,0,staY,endX,0,endY);
+    //strokeWeight(2.0);
+    //strokeCap(ROUND);
+    //stroke(0.24,0.85,0.23);
+    //line(staX,0,staY,endX,0,endY);
   }
   
   boolean crosses( Road r ) {

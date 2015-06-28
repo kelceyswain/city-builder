@@ -105,6 +105,16 @@ class LSystem {
           float end_y = b.turtle_y;
           LRoadAttr ra = globalGoals(end_x, end_y, b.turtle_angle);
           ra.angle -= b.turtle_angle;
+          if(b.number_of_roads==0) {
+            if( null==osc ) { println("OSC is null");} else {
+              OscMessage msg = new OscMessage("/branch");
+              msg.add(b.start_x/W);
+              msg.add(b.start_y/H);
+              msg.add(b.start_angle);
+              osc.send(msg, supercollider);
+            }
+          }
+          b.number_of_roads++;
           
           m_work.add(new LRoadModule((int)random(def_del), new LRuleAttr()));
           m_work.add(new LInsertionQueryModule(ra, 1 ));

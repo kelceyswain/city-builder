@@ -29,11 +29,11 @@ SynthDef(\evilBang, { | freq=0.5, width=0.5, length = 2, cps = 6 |
 )
 
 
-Synth(\evilBang, [\freq, 1, \width, 1]);
+Synth(\evilBang, [\freq, 0.5, \width, 0.1]);
 
 (
 a = Synth(\grainPiano, [\sndbuf, b]);
-o = OSCFunc({ arg msg, time, addr, recvPort; a.set(\t_trig, 1); a.set(\trigger, 0); a.set(\dry, msg[1]); a.set(\pos, msg[2])}, '/road');
+o = OSCFunc({ arg msg, time, addr, recvPort; a.set(\t_trig, 1); a.set(\dry, msg[1]); a.set(\pos, msg[2])}, '/road');
 p = OSCFunc({ arg msg, time, addr, recvPort; Synth(\evilBang, [\freq, msg[1], \width, msg[2]]); }, '/branch');
 )
 

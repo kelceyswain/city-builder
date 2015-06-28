@@ -5,6 +5,6 @@ public class LRoadAttr {
   
   public LRoadAttr() {
     angle = PI/2.0; if(random(1.0)<0.5) angle*=-1.0;
-    distance = random(64.0)+16.0;
+    distance = random(16.0)+16.0;
   }
 }

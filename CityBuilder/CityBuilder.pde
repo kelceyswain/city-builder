@@ -26,21 +26,17 @@ void setup()
     size(W, H, P3D);
     frameRate(24.0);
     colorMode(RGB, 1);
-    color(1.0, 1.0, 0.0); 
+    //color(1.0, 1.0, 0.0); 
     fill(1.0, 1.0, 0.0); 
-    stroke(1.0, 1.0, 0.0);
+    //stroke(1.0, 1.0, 0.0);
     createPopulationDensityMap();
-    makeContours(levels);
+    //makeContours(levels);
 
     osc = new OscP5(this, 12000);
     supercollider = new NetAddress("127.0.0.1", 57120);  
     l = new LSystem(populationDensityMap);
     
     perspective();
-    
-    
-     
-
 }
 
 void draw()
@@ -51,7 +47,7 @@ void draw()
     
     for (int i=0 ; i<levels ; i++) {
         //translate(0,0,10/levels);  
-        drawContours(i);
+        //drawContours(i);
     }
     l.update_branches();
     l.draw_roads();
