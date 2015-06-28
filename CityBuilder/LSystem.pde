@@ -45,7 +45,7 @@ class LSystem {
       LBranch tmp = branches.get(b);
       tmp.reset_turtle();
       updateBranch(tmp);
-      tmp.drawMap();
+      //tmp.drawMap();
     }
   }
 
@@ -62,9 +62,12 @@ class LSystem {
   
   public void draw_roads() {
     for ( int b=0; b<branches.size (); b++ ) {
-      branches.get(b).drawMap();
+      branches.get(b).drawMap(true);
     }
-    roads.draw_roads();
+    for ( int b=0; b<branches.size (); b++ ) {
+      branches.get(b).drawMap(false);
+    }
+    //roads.draw_roads();
   }
 
 

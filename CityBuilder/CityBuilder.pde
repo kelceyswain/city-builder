@@ -36,15 +36,23 @@ void setup()
     supercollider = new NetAddress("127.0.0.1", 57120);  
     l = new LSystem(populationDensityMap);
     
-    perspective();
+   // perspective();
 }
 
 void draw()
 {
     clear();
     //drawPopulationDensityMap();
-    background(1.0, 1.0, 0.95);  
-    
+    background(1.0, 1.0, 0.95);
+    stroke(0.6,0.6,0.6,0.2);
+
+      strokeWeight(1.0);
+      noFill();
+      
+        
+    for(int x=0;x<W;x+=10) line(x,0,x,H);
+    for(int y=0;y<H;y+=10) line(0,y,W,y);
+
     for (int i=0 ; i<levels ; i++) {
         //translate(0,0,10/levels);  
         //drawContours(i);

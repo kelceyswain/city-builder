@@ -82,9 +82,15 @@ public class LBranch {
     return out;
   }
   
-  void drawMap() {
-    branch_length=0;
+  void drawMap(boolean outlines) {
     float tx=start_x, ty=start_y, ta=start_angle;
+    if( outlines ) {
+    branch_length=0;
+    
+    beginShape();
+    stroke(bc);
+    strokeWeight(5);
+    vertex(tx,ty);
     for(int c=0;c<modules.size();c++) {
       LModule m = modules.get(c);
       if(m.getType()==-1) {
@@ -94,16 +100,38 @@ public class LBranch {
         float dx=t.distance*cos(ta);
         float dy=t.distance*-sin(ta);
         branch_length += t.distance;
-        stroke(bc);
-        strokeWeight(5);
-        line(tx,ty,tx+dx,ty+dy);
-        stroke(fc);
-        strokeWeight(2);
-        line(tx,ty,tx+dx,ty+dy);
+
+        //line(tx,ty,tx+dx,ty+dy);
         tx+=dx;ty+=dy;
+        vertex(tx,ty);
       }
     }
+    endShape(); 
+    }
+    else { // not outlines -- ie bright bit in centre of roads
+    tx=start_x; ty=start_y; ta=start_angle;
+    beginShape();
+    stroke(fc);
+    strokeWeight(2);
+    vertex(tx,ty);
+    
+    for(int c=0;c<modules.size();c++) {
+      LModule m = modules.get(c);
+      if(m.getType()==-1) {
+        LTerminal t=(LTerminal)m;
+        
+        ta+=t.angle;
+        float dx=t.distance*cos(ta);
+        float dy=t.distance*-sin(ta);
 
+
+       // line(tx,ty,tx+dx,ty+dy);
+        tx+=dx;ty+=dy;
+        vertex(tx,ty);
+      }
+    }
+    endShape();
+    }
   }
 }
 
