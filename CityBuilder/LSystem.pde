@@ -115,6 +115,8 @@ class LSystem {
               msg.add(b.start_y/H);
               msg.add(b.start_angle);
               osc.send(msg, supercollider);
+              ripples.add(new Ripple(b.start_x, b.start_y));
+              rs.disturb((int)b.start_x,(int)b.start_y);
             }
           }
           b.number_of_roads++;

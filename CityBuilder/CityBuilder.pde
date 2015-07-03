@@ -21,6 +21,9 @@ BlobDetection[] theBlobDetection = new BlobDetection[int(levels)];
 
 RoadMap rm;
 LSystem l;
+
+ArrayList<Ripple> ripples;
+RippleSurface rs;
 void setup()
 {
     size(W, H, P3D);
@@ -32,6 +35,9 @@ void setup()
     createPopulationDensityMap();
     //makeContours(levels);
 
+    ripples = new ArrayList<Ripple>();
+    rs = new RippleSurface();
+    
     osc = new OscP5(this, 12000);
     supercollider = new NetAddress("127.0.0.1", 57120);  
     l = new LSystem(populationDensityMap);
@@ -59,6 +65,11 @@ void draw()
     }
     l.update_branches();
     l.draw_roads();
+    
+    // Comment out below to get rid of ripples
+    draw_ripples();
+    rs.update();
+    rs.draw_surface();
 }
 
 float g(float x, float y) {
@@ -142,3 +153,16 @@ void oscEvent(OscMessage theOscMessage) {
   println(" typetag: "+theOscMessage.typetag());
 }
 
+void mouseClicked()
+{
+  ripples.add(new Ripple((float)mouseX, (float)mouseY));
+}
+
+void draw_ripples()
+{
+  for( int c=0; c<ripples.size();c++ ) {
+    Ripple r = ripples.get(c);
+    if(r.diameter>r.MAX_DIAMETER) ripples.remove(r);
+    else r.drawme();
+  }
+}
