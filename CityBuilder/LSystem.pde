@@ -12,9 +12,11 @@ class LSystem {
   /* Angle to search around the current road end to build the next section */
   final float density_search_angle = 0.1*PI;//(2.0/3.0)*PI; // figure 4 guess
   
-  float startx = width/2;
-  float starty = height/2;
-
+  //float startx = width/2;
+  //float starty = height/2;
+  float startx = (random(0.5)*width)+(0.25*width);
+  float starty = (random(0.5)*height)+(0.25*width);
+  
   ArrayList<LBranch> branches;
   
   RoadMap roads;

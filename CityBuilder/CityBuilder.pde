@@ -68,8 +68,8 @@ void draw()
     
     // Comment out below to get rid of ripples
     draw_ripples();
-    rs.update();
-    rs.draw_surface();
+    //rs.update();
+    //rs.draw_surface();
 }
 
 float g(float x, float y) {
