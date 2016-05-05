@@ -9,7 +9,7 @@ void ofApp::setup(){
     bgc = 0;
 
     xblocks = 10;
-    yblocks = 10;
+    yblocks = xblocks;
     xwidth = 100;
     ywidth = 100;
     zunit = 25;
@@ -52,6 +52,13 @@ void ofApp::setup(){
 void ofApp::update(){
 
 	float lb;
+
+    int rx;
+    int ry;
+
+    int day;
+
+    day = 500;
 	roll += 0.0f;
 	angleV += 0.1f;
 	angleH += 0.f;
@@ -59,17 +66,29 @@ void ofApp::update(){
 	if (angleH > 360.f) angleH = 0.;
     cam.orbit(angleH, angleV, distance);
     cam.roll(roll);
+    static std::default_random_engine generator;
+    static std::normal_distribution<float> distribution((float)xblocks/2.0, (float)xblocks/5.0);
 
-    if (bgc == 1000)
+    if (bgc == day)
 	{
+        
 		bgc = 0;
+        rx = (int)round(distribution(generator));
+        ry = (int)round(distribution(generator));
+
+        ofLog(OF_LOG_NOTICE, "rx: %d \t ry: %d\n", rx, ry); 
+
+        if (rx >= 0 && rx < xblocks && ry >= 0 && ry < yblocks)
+        {
+            blocks[rx][ry].setWidth(blocks[rx][ry].getWidth()+zunit);
+        }
 	}
 
-	lb = sin(((float)bgc*2*PI)/1000.0);
+	lb = sin(((float)bgc*2*PI)/(float)(day));
 	lb = (lb * 0.5) + 0.5;
 	bg = (int)(lb * 255);
 
-    pointLight.setPosition(800*cos((float)bgc*PI*0.002), 50 * sin((float)bgc*PI*0.002), 800*sin((float)bgc*PI*0.002));
+    pointLight.setPosition(800*cos(2*PI*(float)bgc/(float)day), 400*sin(2*PI*(float)bgc/(float)day), 800*sin(2*PI*(float)bgc/(float)day));
 	pointLight.setDiffuseColor( ofFloatColor(0.75) );
     pointLight.setSpecularColor( ofFloatColor(0.75) );
 
@@ -102,14 +121,8 @@ void ofApp::draw(){
 		for (int j = 0; j < yblocks; j++)
 		{
 			int x = blocks[i][j].getWidth();
-			if (ofRandom(0.0, 1.0) > 0.999)
-			{
-				x += zunit;
-			}
-			if(x > (10*zunit)) x = zunit;
-			// blocks[i][j].setPosition(ofRandom(0,1)*ofGetWidth(),ofRandom(0,1)*ofGetHeight(), 0);
+
 			blocks[i][j].setPosition(300-(int)((float)x/2.0), i*xwidth+(int)xoffset, j*ywidth+(int)yoffset);
-			blocks[i][j].set(x, xwidth, ywidth );
 
     		material.begin();
     		ofFill();
