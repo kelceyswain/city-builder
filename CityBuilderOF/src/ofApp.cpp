@@ -2,6 +2,7 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
+
     ofSetVerticalSync(true);
     ofSetFrameRate(60);
     
@@ -9,7 +10,7 @@ void ofApp::setup(){
     bgc = 0;
 
     xblocks = 10;
-    yblocks = xblocks;
+    yblocks = 10;
     xwidth = 100;
     ywidth = 100;
     zunit = 25;
@@ -37,7 +38,7 @@ void ofApp::setup(){
     // the light highlight of the material //
     material.setDiffuseColor(ofColor(255, 255, 255,120));
     material.setSpecularColor(ofColor(255, 255, 255, 120));
-
+    
     ofBackground(bg);
     for (int i = 0; i < xblocks; i++)
     {
@@ -51,14 +52,13 @@ void ofApp::setup(){
 //--------------------------------------------------------------
 void ofApp::update(){
 
-	float lb;
+	float lb, w, x1, x2, y1, y2;
 
-    int rx;
-    int ry;
+    int rx, ry;
 
     int day;
 
-    day = 500;
+    day = 600;
 	roll += 0.0f;
 	angleV += 0.1f;
 	angleH += 0.f;
@@ -66,17 +66,29 @@ void ofApp::update(){
 	if (angleH > 360.f) angleH = 0.;
     cam.orbit(angleH, angleV, distance);
     cam.roll(roll);
-    static std::default_random_engine generator;
-    static std::normal_distribution<float> distribution((float)xblocks/2.0, (float)xblocks/5.0);
+    
 
     if (bgc == day)
 	{
         
 		bgc = 0;
-        rx = (int)round(distribution(generator));
-        ry = (int)round(distribution(generator));
 
-        ofLog(OF_LOG_NOTICE, "rx: %d \t ry: %d\n", rx, ry); 
+        do {
+            x1 = 2.0 * ofRandom(0.f, 1.f) - 1.0;
+            x2 = 2.0 * ofRandom(0.f, 1.f) - 1.0;
+            w = x1 * x1 + x2 * x2;
+        } while (w >= 1.0);
+
+        w = sqrt( (-2.0 * log(w) ) / w);
+        y1 = x1 * w;
+        y2 = x2 * w;
+
+        // ofLog(OF_LOG_NOTICE, "%f, %f", y1, y2);
+
+        rx = (int)round(y1 * ((float)xblocks*0.1) + ((float)xblocks*0.5));
+        ry = (int)round(y2 * ((float)yblocks*0.1) + ((float)yblocks*0.5));
+
+        // ofLog(OF_LOG_NOTICE, "rx: %d \t ry: %d\n", rx, ry); 
 
         if (rx >= 0 && rx < xblocks && ry >= 0 && ry < yblocks)
         {
