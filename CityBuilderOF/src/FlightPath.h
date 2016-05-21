@@ -1,7 +1,10 @@
+#ifndef FLIGHTPATH_H
+#define FLIGHTPATH_H
+
 #include "CityObject.h"
 
 class FlightPath {
-	
+
 	public:
 
 	CityObject* start;
@@ -18,3 +21,5 @@ class FlightPath {
 	void update();
 
 };
+
+#endif

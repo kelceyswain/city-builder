@@ -12,13 +12,12 @@ CityObject::CityObject(int a, int b) {
 
 	xpos = xoffset + x*block_width;
 	ypos = yoffset + y*block_width;
-	//zpos = zoffset + (int)((float)height/2.0);
 	zpos = zoffset + height/2;
 
 	myOfBox.set(width,depth,height);
 	myOfBox.setPosition(xpos,ypos,zpos);
 
-    ofLog(OF_LOG_NOTICE, "x: %d, y: %d, xpos: %d, ypos: %d, zpos: %d", x, y, xpos, ypos, zpos);
+    // ofLog(OF_LOG_NOTICE, "x: %d, y: %d, xpos: %d, ypos: %d, zpos: %d", x, y, xpos, ypos, zpos);
 
     myMaterial.setShininess( 120 );
     // the light highlight of the material //
@@ -28,7 +27,7 @@ CityObject::CityObject(int a, int b) {
 }
 
 CityObject::~CityObject() {
-	
+
 }
 
 void CityObject::grow() {
@@ -49,11 +48,10 @@ void CityObject::draw() {
 	myMaterial.begin();
 	ofFill();
 	ofEnableAlphaBlending();
-	// ofSetColor(40,40,40,10);
 
 	myOfBox.setScale(0.95f);
 	myOfBox.draw();
-	ofDisableAlphaBlending(); 
+	ofDisableAlphaBlending();
 	myMaterial.end();
 
 	ofNoFill();

@@ -22,7 +22,7 @@ class ofApp : public ofBaseApp{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
-				
+
 		int xblocks;
 		int yblocks;
 		int xwidth;
@@ -34,7 +34,6 @@ class ofApp : public ofBaseApp{
     	bool bOrbit, bRoll;
     	float angleH, angleV, roll, distance;
 
-		//ofBoxPrimitive blocks [16][16];
 	    CityObject* blocks[16][16];
 
 		ofBoxPrimitive box;
