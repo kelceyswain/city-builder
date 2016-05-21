@@ -1,6 +1,8 @@
 #pragma once
 
 #include "ofMain.h"
+#include "CityObject.h"
+#include "FlightPath.h"
 
 class ofApp : public ofBaseApp{
 
@@ -32,7 +34,8 @@ class ofApp : public ofBaseApp{
     	bool bOrbit, bRoll;
     	float angleH, angleV, roll, distance;
 
-		ofBoxPrimitive blocks [16][16];
+		//ofBoxPrimitive blocks [16][16];
+	    CityObject* blocks[16][16];
 
 		ofBoxPrimitive box;
 		int bg;
@@ -45,5 +48,8 @@ class ofApp : public ofBaseApp{
     	ofVboMesh deformPlane;
     	ofVboMesh topCap, bottomCap, body;
     	vector<ofMeshFace> triangles;
+
+    	vector<FlightPath*> fps;
+    	int currentDay = 0;
 
 };

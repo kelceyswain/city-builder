@@ -28,8 +28,14 @@ void ofApp::setup(){
     distance = 1000.f;
     pointLight.enable();
 
-    cam.orbit(angleH, angleV, distance);
-    cam.roll(roll);
+    float camx=-500;
+    float camy=-500;
+    float camz=120;
+
+    cam.setPosition(camx,camy,camz);
+    cam.lookAt(ofVec3f(0,0,0), ofVec3f(0,0,1));
+    //cam.orbit(angleH, angleV, distance);
+    //cam.roll(roll);
 
     pointLight.setDiffuseColor( ofFloatColor(0.75,0.7,0.6) );
     pointLight.setSpecularColor( ofFloatColor(0.52,0.53,0.5) );
@@ -44,7 +50,8 @@ void ofApp::setup(){
     {
     	for (int j = 0; j < yblocks; j++)
     	{
-    		blocks[i][j].set(zunit, xwidth, ywidth );
+    		//blocks[i][j].set(zunit, xwidth, ywidth );
+            blocks[i][j] = new CityObject(i,j);
     	}
     }
 }
@@ -58,20 +65,25 @@ void ofApp::update(){
 
     int day;
 
-    day = 600;
+    day = 100;
 	roll += 0.0f;
 	angleV += 0.1f;
 	angleH += 0.f;
 	if (angleV > 360.f) angleV = 0.;
 	if (angleH > 360.f) angleH = 0.;
-    cam.orbit(angleH, angleV, distance);
-    cam.roll(roll);
-    
+    //cam.orbit(angleH, angleV, distance);
+  //  cam.roll(roll);
+    float camx=cos(angleV)*distance;
+    float camy=-sin(angleV)*distance;
+    float camz=120.0;
+    cam.setPosition(camx,camy,camz);
+    cam.lookAt(ofVec3f(0,0,0), ofVec3f(0,0,1));
+
 
     if (bgc == day)
 	{
         
-		bgc = 0;
+		bgc = 0; currentDay++;
 
         do {
             x1 = 2.0 * ofRandom(0.f, 1.f) - 1.0;
@@ -92,9 +104,32 @@ void ofApp::update(){
 
         if (rx >= 0 && rx < xblocks && ry >= 0 && ry < yblocks)
         {
-            blocks[rx][ry].setWidth(blocks[rx][ry].getWidth()+zunit);
+            //blocks[rx][ry].setWidth(blocks[rx][ry].getWidth()+zunit);
+            blocks[rx][ry]->grow();
         }
+
+        for (vector<FlightPath*>::iterator it = fps.begin() ; it != fps.end(); ++it) {
+            delete (*it);
+        }
+
+        fps.clear();
+
+        for(int x=0;x<xblocks;x++){
+            for(int y=0; y<yblocks;y++) {
+                for( int block=0;block<blocks[x][y]->num_blocks; block++ ) {
+                    int ex = (int)(ofRandom(0.f,10.f)); int ey=(int)(ofRandom(0.f,10.f));
+
+                    fps.push_back(new FlightPath(blocks[x][y], blocks[ex][ey], 25));
+                }
+            }
+        }
+
 	}
+
+    for (vector<FlightPath*>::iterator it = fps.begin() ; it != fps.end(); ++it) {
+        (*it)->update();
+    }
+    
 
 	lb = sin(((float)bgc*2*PI)/(float)(day));
 	lb = (lb * 0.5) + 0.5;
@@ -132,26 +167,31 @@ void ofApp::draw(){
 	{
 		for (int j = 0; j < yblocks; j++)
 		{
-			int x = blocks[i][j].getWidth();
+			// int x = blocks[i][j].getWidth();
 
-			blocks[i][j].setPosition(300-(int)((float)x/2.0), i*xwidth+(int)xoffset, j*ywidth+(int)yoffset);
+			// blocks[i][j].setPosition(300-(int)((float)x/2.0), i*xwidth+(int)xoffset, j*ywidth+(int)yoffset);
 
-    		material.begin();
-    		ofFill();
-    		ofEnableAlphaBlending();
-    		// ofSetColor(40,40,40,10);
+    		// material.begin();
+    		// ofFill();
+    		// ofEnableAlphaBlending();
+    		// // ofSetColor(40,40,40,10);
 
-    		blocks[i][j].setScale(0.95f);
-    		blocks[i][j].draw();
-    		ofDisableAlphaBlending(); 
-    		material.end();
+    		// blocks[i][j].setScale(0.95f);
+    		// blocks[i][j].draw();
+    		// ofDisableAlphaBlending(); 
+    		// material.end();
 
-    		ofNoFill();
-    		ofSetColor(200);
-    		blocks[i][j].drawWireframe();
-    		blocks[i][j].setScale(1.f);
+    		// ofNoFill();
+    		// ofSetColor(200);
+    		// blocks[i][j].drawWireframe();
+    		// blocks[i][j].setScale(1.f);
+            blocks[i][j]->draw();
+
 		}
 	}
+    for (vector<FlightPath*>::iterator it = fps.begin() ; it != fps.end(); ++it) {
+        (*it)->draw();
+    }
     // box.setPosition(ofGetWidth() * 0.5, ofGetHeight() * 0.5, 0);
     // box.rotate(1, 1.0, 0.0, 0.0);
     // box.rotate(-1, 0.0, 1.0, 0.0);
