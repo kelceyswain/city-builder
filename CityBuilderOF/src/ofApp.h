@@ -41,6 +41,7 @@ class ofApp : public ofBaseApp{
 		int bgc;
 
 		ofLight pointLight;
+		ofLight softLight;
 		ofMaterial material;
 
 		ofVboMesh boxSides[ofBoxPrimitive::SIDES_TOTAL];

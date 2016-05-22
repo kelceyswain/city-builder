@@ -27,6 +27,7 @@ void ofApp::setup(){
   	roll = 90.f;
     distance = 1000.f;
     pointLight.enable();
+    softLight.enable();
 
     float camx=-500;
     float camy=-500;
@@ -65,13 +66,13 @@ void ofApp::update(){
 
     day = 600;
 	roll += 0.0f;
-	angleV += 0.1f;
+	angleV += 0.002f;
 	angleH += 0.f;
-	if (angleV > 360.f) angleV = 0.;
-	if (angleH > 360.f) angleH = 0.;
+	if (angleV > 2 * PI) angleV = 0.;
+	if (angleH > 2 * PI) angleH = 0.;
 
-    float camx=cos(angleV/60)*distance;
-    float camy=-sin(angleV/60)*distance;
+    float camx=cos(angleV)*distance;
+    float camy=-sin(angleV)*distance;
     float camz=120.0;
 
     cam.setPosition(camx,camy,camz);
@@ -127,9 +128,15 @@ void ofApp::update(){
 	lb = (lb * 0.5) + 0.5;
 	bg = (int)(lb * 255);
 
-    pointLight.setPosition(800*sin(2*PI*(float)bgc/(float)day), 800*cos(2*PI*(float)bgc/(float)day), 400*-cos(2*PI*(float)bgc/(float)day));
+    // box.setPosition(800*sin(2*PI*(float)bgc/(float)day), 200*cos(2*PI*(float)bgc/(float)day), 800*-cos(2*PI*(float)bgc/(float)day));
+    pointLight.setPosition(800*sin(2*PI*(float)bgc/(float)day), 200*cos(2*PI*(float)bgc/(float)day), 800*-cos(2*PI*(float)bgc/(float)day));
+    softLight.setPosition(800*sin(2*PI*(float)bgc/(float)day), 200*cos(2*PI*(float)bgc/(float)day), 800*cos(2*PI*(float)bgc/(float)day));
+
     pointLight.setDiffuseColor( ofFloatColor(0.75) );
     pointLight.setSpecularColor( ofFloatColor(0.75) );
+
+    softLight.setDiffuseColor( ofFloatColor(0.1, 0.15, 0.15) );
+    softLight.setSpecularColor( ofFloatColor(0.1, 0.15, 0.15) );
 
 	bgc++;
 }
@@ -162,7 +169,7 @@ void ofApp::draw(){
     for (vector<FlightPath*>::iterator it = fps.begin() ; it != fps.end(); ++it) {
         (*it)->draw();
     }
-
+    // box.draw();
     ofDisableLighting();
     ofDisableDepthTest();
 	cam.end();
