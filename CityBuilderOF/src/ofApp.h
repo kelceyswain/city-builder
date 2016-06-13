@@ -3,6 +3,7 @@
 #include "ofMain.h"
 #include "CityObject.h"
 #include "FlightPath.h"
+#include "ofxOsc.h"
 
 class ofApp : public ofBaseApp{
 
@@ -28,6 +29,7 @@ class ofApp : public ofBaseApp{
 		int xwidth;
 		int ywidth;
 		int zunit;
+		int day = 1;
 
 		ofCamera cam;
 		float angle;
@@ -51,5 +53,7 @@ class ofApp : public ofBaseApp{
 
     	vector<FlightPath*> fps;
     	int currentDay = 0;
+
+		ofxOscSender oscSender;
 
 };

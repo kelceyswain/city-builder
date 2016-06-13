@@ -2,12 +2,14 @@
 #define CITYOBJECT__H
 
 #include "ofMain.h"
+#include "ofxOsc.h"
 
 class CityObject {
-	
+
 	public:
 
 	ofBoxPrimitive myOfBox;
+	ofxOscSender oscSender;
 
     int block_width = 100;
 
@@ -15,14 +17,15 @@ class CityObject {
     int xpos, ypos, zpos;
 
 	int height;
+	int max_height;
 	int width;
 	int depth;
 
-	int xoffset=-500, yoffset=-500, zoffset = -300;
+	int xoffset=-400, yoffset=-400, zoffset = -300;
 
-	int zunit=25;
+	int zunit=10;
 	int num_blocks=0;
-	
+
 	ofMaterial myMaterial;
 
 	CityObject(int a, int b);
