@@ -9,7 +9,7 @@ CityObject::CityObject(int a, int b) {
 	width = block_width;
 	depth = block_width;
 	height = zunit;
-	max_height = 700;
+	max_height = 500;
 
 	xpos = xoffset + x*block_width;
 	ypos = yoffset + y*block_width;
@@ -34,9 +34,14 @@ CityObject::~CityObject() {
 }
 
 void CityObject::grow() {
+	if (height < zunit)
+	{
+		zunit = 0;
+	}
+
 	if (height + zunit >= max_height)
 	{
-		height = 0;
+		zunit = -zunit;
 	}
 	height += zunit;
 	xpos = xoffset + x*block_width;
@@ -63,7 +68,7 @@ void CityObject::draw() {
 	myMaterial.begin();
 	block_color = myMaterial.getDiffuseColor();
 	add_color = ofColor(1, 1, 1, 0);
-	
+
 	if (block_color != ofColor(255, 255, 255, 120))
 	{
 		block_color += add_color;

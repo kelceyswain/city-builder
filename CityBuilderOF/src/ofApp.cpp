@@ -137,7 +137,7 @@ void ofApp::setup(){
     yblocks = 9;
     xwidth = 100;
     ywidth = 100;
-    zunit = 10;
+    zunit = 15;
 
 	cam.setFov(60);
 	cam.setNearClip(1);
@@ -185,8 +185,10 @@ void ofApp::update(){
 	float lb, w, x1, x2, y1, y2;
 
     int rx, ry;
-    float day_div = 10000.f;
+    // float day_div = 10000.f;
+    float day_div = 5000.f;
     float dur;
+    int ldlen = 1000;
 
     // int day;
 
@@ -200,7 +202,7 @@ void ofApp::update(){
     //day = 600;
 	roll += 0.0f;
 	// angleV += 0.002f;
-    angleV += 1.f/(float)day;
+    angleV += 0.5/(float)day;
 	angleH += 0.f;
 	if (angleV > 2 * PI) angleV = 0.;
 	if (angleH > 2 * PI) angleH = 0.;
@@ -272,8 +274,14 @@ void ofApp::update(){
 	bg = (int)(lb * 255);
 
     // box.setPosition(800*sin(2*PI*(float)bgc/(float)day), 200*cos(2*PI*(float)bgc/(float)day), 800*-cos(2*PI*(float)bgc/(float)day));
-    pointLight.setPosition(800*sin(2*PI*(float)bgc/(float)day), 200*cos(2*PI*(float)bgc/(float)day), 800*-cos(2*PI*(float)bgc/(float)day));
-    softLight.setPosition(800*sin(2*PI*(float)bgc/(float)day), 200*cos(2*PI*(float)bgc/(float)day), 800*cos(2*PI*(float)bgc/(float)day));
+    // pointLight.setPosition(800*sin(*PI*(float)bgc/(float)day), 200*cos(2*PI*(float)bgc/(float)day), 800*-cos(2*PI*(float)bgc/(float)day));
+    // softLight.setPosition(800*sin(2*PI*(float)bgc/(float)day), 200*cos(2*PI*(float)bgc/(float)day), 800*cos(2*PI*(float)bgc/(float)day));
+
+    pointLight.setPosition(800*sin(2*PI*(float)lday/(float)ldlen), 200*cos(2*PI*(float)lday/(float)ldlen), 800*-cos(2*PI*(float)lday/(float)ldlen));
+    softLight.setPosition(800*sin(2*PI*(float)lday/(float)ldlen), 200*cos(2*PI*(float)lday/(float)ldlen), 800*cos(2*PI*(float)lday/(float)ldlen));
+
+    lday++;
+    if (lday >= ldlen) lday = 1;
 
     pointLight.setDiffuseColor( ofFloatColor(0.75) );
     pointLight.setSpecularColor( ofFloatColor(0.75) );

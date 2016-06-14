@@ -30,6 +30,7 @@ class ofApp : public ofBaseApp{
 		int ywidth;
 		int zunit;
 		int day = 1;
+		int lday = 1;
 
 		ofCamera cam;
 		float angle;

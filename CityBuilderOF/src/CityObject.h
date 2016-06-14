@@ -23,7 +23,7 @@ class CityObject {
 
 	int xoffset=-400, yoffset=-400, zoffset = -300;
 
-	int zunit=10;
+	int zunit=15;
 	int num_blocks=0;
 
 	ofMaterial myMaterial;
