@@ -1,3 +1,4 @@
+
 (
 var kick, snare, hihat;
 kick = Buffer.read(s,"/home/kelcey/audio/percussion/linndrum/kick.wav");

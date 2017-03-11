@@ -33,6 +33,7 @@ a.set(\bpm, 750);
 a.set(\amp, 0.5);
 
 
+
 {LFSaw.kr(133/120).range(0,1)* Formant.ar([MouseX.kr(50, 400),MouseX.kr(50*1.01,400*1.01)], MouseY.kr(400, 1000), mul:0.2)}.play
 
 s.quit;
